@@ -1,3 +1,16 @@
+
+#[path = ".\\window.rs"]
+mod window;
+
 fn main() {
-    println!("Hello, world!");
+    init();
+    run();
+}
+
+fn init()->(){
+
+}
+
+fn run()->(){
+
 }
