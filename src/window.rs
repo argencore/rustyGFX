@@ -5,6 +5,7 @@ mod matrix_math_helper;
 use glium::glutin;
 use glium;
 
+///function to create the window and return it
 pub fn create_window(ref mut events_loop :&glutin::EventsLoop) -> glium::Display{
 
     let window = glutin::WindowBuilder::new();

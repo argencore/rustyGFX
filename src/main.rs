@@ -4,6 +4,8 @@ extern crate image;
 
 #[path = ".\\window.rs"]
 mod window;
+#[path = ".\\shader_parser.rs"]
+mod shader_parser;
 
 use glium::glutin;
 use glium::Surface;
