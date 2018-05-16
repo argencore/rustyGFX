@@ -1,9 +1,10 @@
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
+use glium;
 
 #[derive(Debug,Clone,Copy)]
-enum Shader {
+pub enum Shader {
     VERTEX,
     PIXEL,
     GEOMETRY,
@@ -13,14 +14,14 @@ enum Shader {
     ERROR,
 }
 
-fn read_file(file_path :&String)-> String{
+pub fn read_file(file_path :&String)-> String{
     let mut file = File::open(file_path).expect("unable to open file");
     let mut contents = String::new();
     file.read_to_string(&mut contents);
     return contents
 }
 
-fn shader_parser(file_path :String)->(Shader,String){
+pub fn shader_parser(file_path :String)->(Shader,String){
     let extension = &file_path[file_path.len()-5 .. file_path.len()];
     match extension{
         ".vert" => return (Shader::VERTEX,read_file(&file_path)),
@@ -33,14 +34,6 @@ fn shader_parser(file_path :String)->(Shader,String){
 
     }
 
-}
-
-fn make_program(paths :[String]){
-    let mut shaders = Vec::new();
-    for path in paths{
-        shaders.push(shader_parser(path.to_string()));
-        println!("{}",path.to_string());
-    }
 }
 
 #[test]
@@ -59,8 +52,3 @@ fn test_shader_parser(){
     shader_parser("test.tese".to_string());
 }
 
-#[test]
-fn test_make_program(){
-    let paths = ["test.vert","test.frag","test.geom"];
-    make_program(paths);
-}
