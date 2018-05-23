@@ -1,5 +1,5 @@
 
-#[path = ".\\matrix_math_helper.rs"]
+#[path = "matrix_math_helper.rs"]
 mod matrix_math_helper;
 
 use glium::glutin;

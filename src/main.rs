@@ -2,16 +2,17 @@
 extern crate glium;
 extern crate image;
 
-#[path = ".\\window.rs"]
+#[path = "window.rs"]
 mod window;
-#[path = ".\\shader_parser.rs"]
+#[path = "shader_parser.rs"]
 mod shader_parser;
-#[path = ".\\matrix_math_helper.rs"]
+#[path = "matrix_math_helper.rs"]
 mod mat;
+#[path = "object_parser.rs"]
+mod object_parser;
+
 use glium::glutin;
 use glium::Surface;
-use glutin::GlContext;
-use std::io::{stdin,stdout,Write};
 
 ///this is an enume to define the state of the
 //program at any point it is useful for code flow 
@@ -58,6 +59,10 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
     let mut in_menu = false;
     let mut vertex_shader_src = shader_parser::read_file(&"vertex_shader.vert".to_string());
     let mut fragment_shader_src = shader_parser::read_file(&"fragment_shader.frag".to_string());
+    let mut vertStrings = object_parser::fileSection("object.obj".to_string(),"v".to_string());
+    for string in vertStrings{
+        println!("{}",string);
+    }
     //while we should be running
     while state == program_state::RUNNING{
     let program = glium::Program::from_source(*window, &vertex_shader_src, &fragment_shader_src, None).unwrap();
@@ -95,9 +100,9 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
 fn draw(window :&glium::Display, program :glium::Program)->(){
     //get the draw target
     let mut target = window.draw();
-    let vertex1 = mat::Vertex { position: [-0.5, -0.5], tex_coords: [0.0,0.0] };
-    let vertex2 = mat::Vertex { position: [ 0.0,  0.5] , tex_coords: [0.0,0.0]};
-    let vertex3 = mat::Vertex { position: [ 0.5, -0.25] , tex_coords: [0.0,0.0]};
+    let vertex1 = mat::Vertex { position: [-0.5, -0.5,0.0], tex_coords: [0.0,0.0] };
+    let vertex2 = mat::Vertex { position: [ 0.0,  0.5,0.0] , tex_coords: [0.0,0.0]};
+    let vertex3 = mat::Vertex { position: [ 0.5, -0.25,0.0] , tex_coords: [0.0,0.0]};
     let shape = vec![vertex1, vertex2, vertex3];
 
     let vertex_buffer = glium::VertexBuffer::new(window, &shape).unwrap();
