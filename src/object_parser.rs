@@ -84,9 +84,16 @@ pub fn faces(fileName :&String)->Vec<mat::Face>{
             let mut face :mat::Face = mat::Face {position: 0,tex_coord: 0,normal: 0};
             if word != "f"{
                 let tmp :Vec<&str> = word.split('/').collect();
-                face.position = tmp[0].parse::<u16>().unwrap();
-                face.tex_coord = tmp[1].parse::<u16>().unwrap();
-                face.normal = tmp[2].parse::<u16>().unwrap();
+                if tmp.len() >= 3{
+                    face.position = tmp[0].parse::<u16>().unwrap();
+                    face.tex_coord = tmp[1].parse::<u16>().unwrap();
+                    face.normal = tmp[2].parse::<u16>().unwrap();
+                }else{
+
+                    face.position = tmp[0].parse::<u16>().unwrap();
+                    face.tex_coord = 0;
+                    face.normal = tmp[1].parse::<u16>().unwrap();
+                }
                 faces.push(face);
             }
         }
@@ -112,12 +119,36 @@ pub fn positions(fileName :String)->Vec<mat::Vertex>{
 
 pub fn texels(fileName :String)->Vec<mat::Texture>{
     let mut texels :Vec<mat::Texture> = Vec::new();
+    let mut tex = unmodifiedTextures(&fileName);
+    let mut indexes = faces(&fileName);
+    indexes.reverse();
+    while !indexes.is_empty(){
+        let mut i = indexes.pop().unwrap();
+
+        texels.push(tex[(i.tex_coord - 1) as usize])
+    }
     return texels
 }
 
 pub fn normals(fileName :String)->Vec<mat::Normal>{
     let mut normals :Vec<mat::Normal> = Vec::new();
+    let mut norm = unmodifiedNormals(&fileName);
+    let mut indexes = faces(&fileName);
+    indexes.reverse();
+    while !indexes.is_empty(){
+        let mut i = indexes.pop().unwrap();
+
+        normals.push(norm[(i.normal - 1) as usize])
+    }
     return normals
+}
+
+pub fn getObjectFileName()->String{
+    let mut file = File::open("objectToLoad.txt").expect("unable to open objectToLoad.txt");
+    let mut content = String::new();
+    file.read_to_string(&mut content);
+    let lines :Vec<&str> = content.lines().collect();
+    return lines[0].to_string().trim().to_string()
 }
 
 pub fn fileSection(ref fileName :&String, token :String) -> Vec<String>{

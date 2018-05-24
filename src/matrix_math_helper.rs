@@ -31,6 +31,12 @@ pub struct Face{
     pub normal: u16,
 }
 
+#[derive(Copy, Clone, Debug)]
+pub struct posTex{
+    pub position: [f32; 3],
+    tex_coords: [f32; 2],
+}
+
 implement_vertex!(Face, position,tex_coord,normal);
 
 

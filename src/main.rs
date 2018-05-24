@@ -57,13 +57,15 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
     //update state
     state = program_state::RUNNING;
     let mut in_menu = false;
+    let mut objectName = object_parser::getObjectFileName();
     let mut vertex_shader_src = shader_parser::read_file(&"vertex_shader.vert".to_string());
     let mut fragment_shader_src = shader_parser::read_file(&"fragment_shader.frag".to_string());
     //while we should be running
     while state == program_state::RUNNING{
     let program = glium::Program::from_source(*window, &vertex_shader_src, &fragment_shader_src, None).unwrap();
+    let mut object = objectName.clone();
         //draw the scene
-        draw(window,program);
+        draw(window,program, object);
         //handle events using pattern matching
         events_loop.poll_events(|ev|{
             match ev {
@@ -80,6 +82,10 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
                                 fragment_shader_src = shader_parser::read_file(&"fragment_shader.frag".to_string());
                                 in_menu = false;
                             }
+                            Some(glutin::VirtualKeyCode::O) => if in_menu{
+                                objectName = object_parser::getObjectFileName();
+                                in_menu = false;
+                            }
                             _=>(),
                         }
 
@@ -93,7 +99,7 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
 
 }
 
-fn draw(window :&glium::Display, program :glium::Program)->(){
+fn draw(window :&glium::Display, program :glium::Program, object :String)->(){
     //get the draw target
     let mut target = window.draw();
 
@@ -119,9 +125,9 @@ fn draw(window :&glium::Display, program :glium::Program)->(){
             perspective: perspective,
             view: view_matrix(&[2.0,1.0,1.0],&[-2.0,-1.0,1.0],&[0.0,1.0,0.0]),
             model: [
-                [0.6,0.0,0.0,0.0],
-                [0.0,0.6,0.0,0.0],
-                [0.0,0.0,0.6,0.0],
+                [0.4,0.0,0.0,0.0],
+                [0.0,0.4,0.0,0.0],
+                [0.0,0.0,0.4,0.0],
                 [0.0,0.0,2.0,1.0f32],
             ],
             u_light: [-1.0,0.4,0.9f32],
@@ -143,14 +149,17 @@ fn draw(window :&glium::Display, program :glium::Program)->(){
     let vertex2 = mat::Vertex { position: [ 0.0,  0.5,0.0]};
     let vertex3 = mat::Vertex { position: [ 0.5, -0.25,0.0]};
     //let shape = vec![vertex1,vertex2,vertex3];
-    let shape = object_parser::positions("GLBlender1-cube.obj".to_string());
+    let shape = object_parser::positions(object.clone());
+    let texels = object_parser::texels(object.clone());
+    let normals = object_parser::normals(object);
+
 
     let vertex_buffer = glium::VertexBuffer::new(window, &shape).unwrap();
-   // let normal_buffer = glium::VertexBuffer::new(window, &normals).unwrap();
+    let normal_buffer = glium::VertexBuffer::new(window, &normals).unwrap();
     let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
 
     target.clear_color_and_depth((0.0,0.0,0.0,1.0),1.0);
-    target.draw(&vertex_buffer,&indices,&program,&uniforms,&params).unwrap();
+    target.draw((&vertex_buffer,&normal_buffer),&indices,&program,&uniforms,&params).unwrap();
     //finish and present window
     target.finish().unwrap();
 }
