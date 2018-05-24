@@ -7,8 +7,8 @@ pub fn vertices(fileName :String)-> Vec<matrix_math_helper::Vertex>{
     let vertices :Vec<matrix_math_helper::Vertex> = Vec::new();
     //read file
     //get all lines with v and vt
-    let vertStrings = fileSection(fileName,"v".to_string());
-    let texStrings = fileSelection(fileName,"vt".to_string());
+    let vertStrings = fileSection(&fileName,"v".to_string());
+    let texStrings = fileSection(&fileName,"vt".to_string());
     //parse those into new vertex structs make sure not out of bounds
     //add those to vector
     return vertices
@@ -29,7 +29,7 @@ pub fn indices()->Vec<i32>{
     return indices
 }
 
-pub fn fileSection(fileName :String, token :String) -> Vec<String>{
+pub fn fileSection(fileName :&String, token :String) -> Vec<String>{
     let mut file = File::open(fileName).expect("unable to open file");
     let mut content = String::new();
     let mut tokenLines :Vec<String> = Vec::new();

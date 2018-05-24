@@ -59,10 +59,6 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
     let mut in_menu = false;
     let mut vertex_shader_src = shader_parser::read_file(&"vertex_shader.vert".to_string());
     let mut fragment_shader_src = shader_parser::read_file(&"fragment_shader.frag".to_string());
-    let mut vertStrings = object_parser::fileSection("object.obj".to_string(),"v".to_string());
-    for string in vertStrings{
-        println!("{}",string);
-    }
     //while we should be running
     while state == program_state::RUNNING{
     let program = glium::Program::from_source(*window, &vertex_shader_src, &fragment_shader_src, None).unwrap();

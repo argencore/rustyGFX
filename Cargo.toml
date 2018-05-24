@@ -6,4 +6,4 @@ authors = ["Anthony Comstock <a32@pdx.edu>"]
 [dependencies]
 glium = "*"
 image = "*"
-obj-rs = "0.4"
+obj-rs = { version = "0.4", features = ["glium-support"]}
