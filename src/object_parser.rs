@@ -1,35 +1,126 @@
 #[path = "matrix_math_helper.rs"]
-mod matrix_math_helper;
+pub mod mat;
 use std::fs::File;
 use std::io::prelude::*;
 
-pub fn vertices(fileName :String)-> Vec<matrix_math_helper::Vertex>{
-    let vertices :Vec<matrix_math_helper::Vertex> = Vec::new();
-    //read file
-    //get all lines with v and vt
-    let vertStrings = fileSection(&fileName,"v".to_string());
-    let texStrings = fileSection(&fileName,"vt".to_string());
-    //parse those into new vertex structs make sure not out of bounds
-    //add those to vector
-    return vertices
-}
-pub fn normals()->Vec<matrix_math_helper::Normal>{
-    let normals :Vec<matrix_math_helper::Normal> = Vec::new();
-    //read file
-    //get all lines with vn
-    //parse into new normal struct
-    //add to vector
-    return normals
-}
-pub fn indices()->Vec<i32>{
-    let indices :Vec<i32> = Vec::new();
-    //read file
-    //get all lines with f
-    //figure out what to do with it
-    return indices
+#[derive(Copy,Clone,Debug)]
+pub struct Model{
+    pub vertices: isize,
+    pub positions: isize,
+    pub texels: isize,
+    pub normals: isize,
+    pub faces: isize,
 }
 
-pub fn fileSection(fileName :&String, token :String) -> Vec<String>{
+
+pub fn vertices(fileName :&String)-> Vec<mat::Vertex>{
+    let mut vertices :Vec<mat::Vertex> = Vec::new();
+    //read file
+    //get all lines with v 
+    let vertStrings = fileSection(&fileName,"v".to_string());
+    //parse those into new vertex structs make sure not out of bounds
+    for string in vertStrings{
+        let mut vertex :mat::Vertex = mat::Vertex { position: [0.0, 0.0,0.0]};
+        let tmp :Vec<&str> = string.split(' ').collect();
+        match tmp.len(){
+            4 => {vertex.position = [tmp[1].parse::<f32>().unwrap(),tmp[2].parse::<f32>().unwrap(),tmp[3].parse::<f32>().unwrap()];
+                  vertices.push(vertex);},
+            3 => {vertex.position = [tmp[1].parse::<f32>().unwrap(),tmp[2].parse::<f32>().unwrap(),0.0];
+                  vertices.push(vertex);},
+            2 => {vertex.position = [tmp[1].parse::<f32>().unwrap(),0.0,0.0];
+                  vertices.push(vertex);},
+            _ => println!("something went wrong trying to fill the vertices structure"),
+        } 
+
+    }
+    return vertices
+}
+
+pub fn unmodifiedTextures(fileName :&String)->Vec<mat::Texture>{
+    let mut textures :Vec<mat::Texture> = Vec::new();
+
+    let texStrings = fileSection(&fileName,"vt".to_string());
+
+    for string in texStrings{
+        let mut texture :mat::Texture = mat::Texture {tex_coords:[0.0,0.0]};
+        let tmp :Vec<&str> = string.split(' ').collect();
+        if tmp.len() >= 3{
+            texture.tex_coords = [tmp[1].parse::<f32>().unwrap(),tmp[2].parse::<f32>().unwrap()];
+        }
+        textures.push(texture);
+    }
+    return textures
+}
+
+pub fn unmodifiedNormals(fileName :&String)->Vec<mat::Normal>{
+    let mut normals :Vec<mat::Normal> = Vec::new();
+    let normalStrings = fileSection(&fileName,"vn".to_string());
+    //parse those into new vertex structs make sure not out of bounds
+    for string in normalStrings{
+        let mut normal :mat::Normal = mat::Normal { normal: (0.0, 0.0,0.0)};
+        let tmp :Vec<&str> = string.split(' ').collect();
+        match tmp.len(){
+            4 => {normal.normal = (tmp[1].parse::<f32>().unwrap(),tmp[2].parse::<f32>().unwrap(),tmp[3].parse::<f32>().unwrap());
+                  normals.push(normal);},
+            3 => {normal.normal = (tmp[1].parse::<f32>().unwrap(),tmp[2].parse::<f32>().unwrap(),0.0);
+                  normals.push(normal);},
+            2 => {normal.normal = (tmp[1].parse::<f32>().unwrap(),0.0,0.0);
+                  normals.push(normal);},
+            _ => println!("something went wrong trying to fill the vertices structure"),
+        } 
+
+    }
+    return normals
+}
+pub fn faces(fileName :&String)->Vec<mat::Face>{
+    let mut faces :Vec<mat::Face> = Vec::new();
+    //read file
+    //get all lines with f
+    let faceStrings = fileSection(&fileName,"f".to_string());
+
+    //figure out what to do with it
+    for line in faceStrings{
+        for word in line.split(' '){
+            let mut face :mat::Face = mat::Face {position: 0,tex_coord: 0,normal: 0};
+            if word != "f"{
+                let tmp :Vec<&str> = word.split('/').collect();
+                face.position = tmp[0].parse::<u16>().unwrap();
+                face.tex_coord = tmp[1].parse::<u16>().unwrap();
+                face.normal = tmp[2].parse::<u16>().unwrap();
+                faces.push(face);
+            }
+        }
+    }
+    return faces
+}
+
+pub fn positions(fileName :String)->Vec<mat::Vertex>{
+    let mut positions :Vec<mat::Vertex> = Vec::new();
+    let mut verts = vertices(&fileName);
+    let mut indexes = faces(&fileName);
+    indexes.reverse();
+    while !indexes.is_empty() {
+        let mut i = indexes.pop().unwrap();
+
+        positions.push(verts[(i.position - 1) as usize]);
+
+
+    }
+    return positions
+    
+}
+
+pub fn texels(fileName :String)->Vec<mat::Texture>{
+    let mut texels :Vec<mat::Texture> = Vec::new();
+    return texels
+}
+
+pub fn normals(fileName :String)->Vec<mat::Normal>{
+    let mut normals :Vec<mat::Normal> = Vec::new();
+    return normals
+}
+
+pub fn fileSection(ref fileName :&String, token :String) -> Vec<String>{
     let mut file = File::open(fileName).expect("unable to open file");
     let mut content = String::new();
     let mut tokenLines :Vec<String> = Vec::new();

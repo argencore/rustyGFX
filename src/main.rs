@@ -7,7 +7,7 @@ mod window;
 #[path = "shader_parser.rs"]
 mod shader_parser;
 #[path = "matrix_math_helper.rs"]
-mod mat;
+pub mod mat;
 #[path = "object_parser.rs"]
 mod object_parser;
 
@@ -96,16 +96,94 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
 fn draw(window :&glium::Display, program :glium::Program)->(){
     //get the draw target
     let mut target = window.draw();
-    let vertex1 = mat::Vertex { position: [-0.5, -0.5,0.0], tex_coords: [0.0,0.0] };
-    let vertex2 = mat::Vertex { position: [ 0.0,  0.5,0.0] , tex_coords: [0.0,0.0]};
-    let vertex3 = mat::Vertex { position: [ 0.5, -0.25,0.0] , tex_coords: [0.0,0.0]};
-    let shape = vec![vertex1, vertex2, vertex3];
+
+
+     let perspective = {
+            let (width, height) = target.get_dimensions();
+            let aspect_ratio = height as f32 / width as f32;
+
+            let fov: f32 = 3.141592 / 3.0;
+            let zfar = 1024.0;
+            let znear = 0.1;
+
+            let f = 1.0 / (fov / 2.0).tan();
+            [
+                [f * aspect_ratio, 0.0,    0.0,                     0.0],
+                [0.0,               f,     0.0,                     0.0],
+                [0.0,               0.0, (zfar+znear)/(zfar-znear), 1.0],
+                [0.0,               0.0, -(2.0*zfar*znear)/(zfar-znear),0.0],
+            ]//this is what is returned from this struct(the matrix)
+        };
+
+        let uniforms = uniform! {
+            perspective: perspective,
+            view: view_matrix(&[2.0,1.0,1.0],&[-2.0,-1.0,1.0],&[0.0,1.0,0.0]),
+            model: [
+                [0.6,0.0,0.0,0.0],
+                [0.0,0.6,0.0,0.0],
+                [0.0,0.0,0.6,0.0],
+                [0.0,0.0,2.0,1.0f32],
+            ],
+            u_light: [-1.0,0.4,0.9f32],
+        };
+
+        let params = glium::DrawParameters {
+            depth: glium::Depth {
+                test: glium::draw_parameters::DepthTest::IfLess,
+                write: true,
+                .. Default::default()
+            },
+            //backface_culling: glium::draw_parameters::BackfaceCullingMode::CullClockwise,
+            .. Default::default()
+        };
+
+
+
+    let vertex1 = mat::Vertex { position: [-0.5, -0.5,0.0] };
+    let vertex2 = mat::Vertex { position: [ 0.0,  0.5,0.0]};
+    let vertex3 = mat::Vertex { position: [ 0.5, -0.25,0.0]};
+    //let shape = vec![vertex1,vertex2,vertex3];
+    let shape = object_parser::positions("GLBlender1-cube.obj".to_string());
 
     let vertex_buffer = glium::VertexBuffer::new(window, &shape).unwrap();
+   // let normal_buffer = glium::VertexBuffer::new(window, &normals).unwrap();
     let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
 
-    target.clear_color_and_depth((0.0,0.0,1.0,1.0),1.0);
-    target.draw(&vertex_buffer,&indices,&program,&glium::uniforms::EmptyUniforms,&Default::default()).unwrap();
+    target.clear_color_and_depth((0.0,0.0,0.0,1.0),1.0);
+    target.draw(&vertex_buffer,&indices,&program,&uniforms,&params).unwrap();
     //finish and present window
     target.finish().unwrap();
+}
+
+fn view_matrix(position: &[f32; 3], direction: &[f32; 3], up: &[f32; 3]) -> [[f32; 4]; 4]{
+    let f = {
+        let f = direction;
+        let len = f[0] * f[0] + f[1] * f[1] + f[2] * f[2];
+        let len = len.sqrt();
+        [f[0]/len, f[1]/len, f[2]/len]
+    };
+
+    let s = [up[1] * f[2] - up[2] * f[1],
+             up[2] * f[0] - up[0] * f[2],
+             up[0] * f[1] - up[1] * f[0]];
+    
+    let s_norm = {
+        let len = s[0] * s[0] + s[1] * s[1] + s[2] * s[2];
+        let len = len.sqrt();
+        [s[0]/len,s[1]/len,s[2]/len]
+    };
+
+    let u = [f[1] * s_norm[2] - f[2] * s_norm[1],
+             f[2] * s_norm[0] - f[0] * s_norm[2],
+             f[0] * s_norm[1] - f[1] * s_norm[0]];
+
+    let p = [-position[0]*s_norm[0] - position[1] * s_norm[1] - position[2] * s_norm[2],
+            -position[0] * u[0] - position[1] * u[1] - position[2]*u[2],
+            -position[0] * f[0] - position[1] * f[1] - position[2] * f[2] ];
+    [
+        [s_norm[0], u[0],f[0],0.0],
+        [s_norm[1], u[1],f[1],0.0],
+        [s_norm[2], u[2],f[2],0.0],
+        [p[0], p[1],p[2],1.0],
+    ]
 }
