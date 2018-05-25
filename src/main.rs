@@ -7,9 +7,11 @@ mod window;
 #[path = "shader_parser.rs"]
 mod shader_parser;
 #[path = "matrix_math_helper.rs"]
-mod mat;
+pub mod mat;
 #[path = "object_parser.rs"]
 mod object_parser;
+#[path = "camera.rs"]
+mod camera;
 
 use glium::glutin;
 use glium::Surface;
@@ -57,13 +59,24 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
     //update state
     state = program_state::RUNNING;
     let mut in_menu = false;
+
+    let mut position = [2.0,1.0,1.0];
+    let mut direction = [-2.0,-1.0,1.0];
+    let mut index = 0;
+    let mut objectName = object_parser::getObjectFileName(index);
+
     let mut vertex_shader_src = shader_parser::read_file(&"vertex_shader.vert".to_string());
     let mut fragment_shader_src = shader_parser::read_file(&"fragment_shader.frag".to_string());
+
+    let mut shape = object_parser::positions(objectName.clone());
+    let mut texels = object_parser::texels(objectName.clone());
+    let mut normals = object_parser::normals(objectName.clone());
+    let mut posTex = object_parser::posTex(&shape,&texels);
     //while we should be running
     while state == program_state::RUNNING{
     let program = glium::Program::from_source(*window, &vertex_shader_src, &fragment_shader_src, None).unwrap();
         //draw the scene
-        draw(window,program);
+        draw(window,program,&posTex,&normals, &position, &direction);
         //handle events using pattern matching
         events_loop.poll_events(|ev|{
             match ev {
@@ -80,6 +93,36 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
                                 fragment_shader_src = shader_parser::read_file(&"fragment_shader.frag".to_string());
                                 in_menu = false;
                             }
+                            Some(glutin::VirtualKeyCode::O) => if in_menu{
+                                index = 0;
+                                objectName = object_parser::getObjectFileName(index);
+                                shape = object_parser::positions(objectName.clone());
+                                texels = object_parser::texels(objectName.clone());
+                                normals = object_parser::normals(objectName.clone());
+                                posTex = object_parser::posTex(&shape,&texels);
+                                in_menu = false;
+                            }
+                            Some(glutin::VirtualKeyCode::N) => if in_menu{
+                                index+=1;
+                                objectName = object_parser::getObjectFileName(index);
+                                shape = object_parser::positions(objectName.clone());
+                                texels = object_parser::texels(objectName.clone());
+                                normals = object_parser::normals(objectName.clone());
+                                posTex = object_parser::posTex(&shape,&texels);
+                                in_menu = false;
+                            }
+                            Some(glutin::VirtualKeyCode::W) => position[2] = position[2] + 0.1,
+                            Some(glutin::VirtualKeyCode::A) => position[0] = position[0] - 0.1,
+                            Some(glutin::VirtualKeyCode::S) => position[2] = position[2] - 0.1,
+                            Some(glutin::VirtualKeyCode::D) => position[0] = position[0] + 0.1,
+                            Some(glutin::VirtualKeyCode::Q) => direction[0] = direction[0] - 0.1,
+                            Some(glutin::VirtualKeyCode::E) => direction[0] = direction[0] + 0.1,
+                            Some(glutin::VirtualKeyCode::Up) => direction[1] = direction[1] + 0.1,
+                            Some(glutin::VirtualKeyCode::Down) => direction[1] = direction[1] - 0.1,
+                            Some(glutin::VirtualKeyCode::Right) => direction[2] = direction[2] + 0.1,
+                            Some(glutin::VirtualKeyCode::Left) => direction[2] = direction[2] - 0.1,
+                            Some(glutin::VirtualKeyCode::PageUp) => position[1] = position[1] + 0.1,
+                            Some(glutin::VirtualKeyCode::PageDown) => position[1] = position[1] - 0.1,
                             _=>(),
                         }
 
@@ -93,19 +136,57 @@ fn run(mut state: program_state,ref window :&glium::Display, mut events_loop: gl
 
 }
 
-fn draw(window :&glium::Display, program :glium::Program)->(){
+fn draw(window :&glium::Display, program :glium::Program, posTex :&Vec<object_parser::mat::PosTex>, normals :&Vec<object_parser::mat::Normal>, position :&[f32;3], direction :&[f32; 3])->(){
     //get the draw target
     let mut target = window.draw();
-    let vertex1 = mat::Vertex { position: [-0.5, -0.5,0.0], tex_coords: [0.0,0.0] };
-    let vertex2 = mat::Vertex { position: [ 0.0,  0.5,0.0] , tex_coords: [0.0,0.0]};
-    let vertex3 = mat::Vertex { position: [ 0.5, -0.25,0.0] , tex_coords: [0.0,0.0]};
-    let shape = vec![vertex1, vertex2, vertex3];
 
-    let vertex_buffer = glium::VertexBuffer::new(window, &shape).unwrap();
+
+     let perspective = {
+            let (width, height) = target.get_dimensions();
+            let aspect_ratio = height as f32 / width as f32;
+
+            let fov: f32 = 3.141592 / 3.0;
+            let zfar = 1024.0;
+            let znear = 0.1;
+
+            let f = 1.0 / (fov / 2.0).tan();
+            [
+                [f * aspect_ratio, 0.0,    0.0,                     0.0],
+                [0.0,               f,     0.0,                     0.0],
+                [0.0,               0.0, (zfar+znear)/(zfar-znear), 1.0],
+                [0.0,               0.0, -(2.0*zfar*znear)/(zfar-znear),0.0],
+            ]//this is what is returned from this struct(the matrix)
+        };
+
+        let uniforms = uniform! {
+            perspective: perspective,
+            view: camera::view_matrix(position,direction,&[0.0,1.0,0.0]),
+            model: [
+                [0.4,0.0,0.0,0.0],
+                [0.0,0.4,0.0,0.0],
+                [0.0,0.0,0.4,0.0],
+                [0.0,0.0,2.0,1.0f32],
+            ],
+            u_light: [-1.0,0.4,0.9f32],
+        };
+
+        let params = glium::DrawParameters {
+            depth: glium::Depth {
+                test: glium::draw_parameters::DepthTest::IfLess,
+                write: true,
+                .. Default::default()
+            },
+            //backface_culling: glium::draw_parameters::BackfaceCullingMode::CullClockwise,
+            .. Default::default()
+        };
+
+    let vertex_buffer = glium::VertexBuffer::new(window, posTex).unwrap();
+    let normal_buffer = glium::VertexBuffer::new(window, normals).unwrap();
     let indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);
 
-    target.clear_color_and_depth((0.0,0.0,1.0,1.0),1.0);
-    target.draw(&vertex_buffer,&indices,&program,&glium::uniforms::EmptyUniforms,&Default::default()).unwrap();
+    target.clear_color_and_depth((0.0,0.0,0.0,1.0),1.0);
+    target.draw((&vertex_buffer,&normal_buffer),&indices,&program,&uniforms,&params).unwrap();
     //finish and present window
     target.finish().unwrap();
 }
+
