@@ -1,4 +1,4 @@
-
+// Copyright <2018> <Anthony Comstock>
 #[path = "matrix_math_helper.rs"]
 mod matrix_math_helper;
 

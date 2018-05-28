@@ -1,5 +1,9 @@
+// this function was taken from the glium tutorials
 
-
+/// function name: view_matrix
+/// inputs: position, direction, up
+/// outputs: [[f32;4];4]
+/// description: this function takes in a position, direction and up of a camera and returns a view matrix
 pub fn view_matrix(position: &[f32; 3], direction: &[f32; 3], up: &[f32; 3]) -> [[f32; 4]; 4]{
     let f = {
         let f = direction;
