@@ -7,11 +7,11 @@ use std::io::prelude::*;
 /// outputs: string containing the contents of the file
 /// description: this is a simple function that reads a file
 /// and returns its contents as a string
-pub fn read_file(file_path :&String)-> String{
+pub fn read_file(file_path: &String) -> String {
     //open the file
     let mut file = File::open(file_path).expect("unable to open file");
     let mut contents = String::new();
     //read it into string
     file.read_to_string(&mut contents);
-    return contents
+    return contents;
 }

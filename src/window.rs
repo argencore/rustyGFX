@@ -6,8 +6,7 @@ use glium::glutin;
 use glium;
 
 ///function to create the window and return it
-pub fn create_window(ref mut events_loop :&glutin::EventsLoop) -> glium::Display{
-
+pub fn create_window(ref mut events_loop: &glutin::EventsLoop) -> glium::Display {
     let window = glutin::WindowBuilder::new();
     let context = glutin::ContextBuilder::new().with_depth_buffer(24);
     glium::Display::new(window, context, &events_loop).unwrap()
