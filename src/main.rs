@@ -33,7 +33,7 @@ enum program_state{
 
 fn main() {
     //make an event handler
-    let mut events_loop = glutin::EventsLoop::new();
+    let events_loop = glutin::EventsLoop::new();
     //set state to initializing
     let mut state = program_state::INITIALIZING;
     //do all of the initialization which returns a window/display

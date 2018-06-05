@@ -162,7 +162,7 @@ pub fn positions(fileName :String)->Vec<mat::Vertex>{
     // create vector of positions
     let mut positions :Vec<mat::Vertex> = Vec::new();
     // get vertices
-    let mut verts = vertices(&fileName);
+    let verts = vertices(&fileName);
     // get faces
     let mut indexes = faces(&fileName);
     // flip the face vector so that pop will remove them in the order they were put in.
@@ -170,7 +170,7 @@ pub fn positions(fileName :String)->Vec<mat::Vertex>{
     // while there are indices which is the first part of the face data
     while !indexes.is_empty() {
         // get the index
-        let mut i = indexes.pop().unwrap();
+        let i = indexes.pop().unwrap();
 
         //push the vertices that relate to the indexes - 1 for 0 indexing
         positions.push(verts[(i.position - 1) as usize]);
@@ -191,12 +191,12 @@ pub fn texels(fileName :String)->Vec<mat::Texture>{
     // create Texture vector
     let mut texels :Vec<mat::Texture> = Vec::new();
     // get texture data
-    let mut tex = unmodifiedTextures(&fileName);
+    let tex = unmodifiedTextures(&fileName);
     // get index data
     let mut indexes = faces(&fileName);
     indexes.reverse();
     while !indexes.is_empty(){
-        let mut i = indexes.pop().unwrap();
+        let i = indexes.pop().unwrap();
         //reorder texture data by index
         texels.push(tex[(i.tex_coord - 1) as usize])
     }
@@ -212,12 +212,12 @@ pub fn normals(fileName :String)->Vec<mat::Normal>{
     // create vector
     let mut normals :Vec<mat::Normal> = Vec::new();
     // get normal data
-    let mut norm = unmodifiedNormals(&fileName);
+    let norm = unmodifiedNormals(&fileName);
     // get index data
     let mut indexes = faces(&fileName);
     indexes.reverse();
     while !indexes.is_empty(){
-        let mut i = indexes.pop().unwrap();
+        let i = indexes.pop().unwrap();
         //reorder data by index
         normals.push(norm[(i.normal - 1) as usize])
     }
