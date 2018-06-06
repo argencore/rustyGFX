@@ -22,9 +22,9 @@ It allows you to move around your object and to switch out objects on the fly.
 * the arrow keys are used for rotation 
 (NOTE: currently movement is tricky because it is based on absolute coordinates instead of relative)
 
-There is a file called vertex_shader.vert this is the file that contains the vertex shader in GLSL. 
+There is a file called vertex_shader.vert this is the file that contains the vertex shader in GLSL it is set to version 330 by default you may adjust this up to 450 if your hardware supports it. 
 Change this file to change the vertex shader and see the results.
-Similarly there is a file called fragment_shader.frag this contains the fragment shader in GLSL and you can change this to change the fragment shader.
+Similarly there is a file called fragment_shader.frag this contains the fragment shader in GLSL and you can change this to change the fragment shader it is also set to 330 and may be adjusted up.
 To see the effects of the changes that you make reload the shaders that you change.
 The object names are in the file objectsToLoad.txt to add an object put its name in this file and place the object with the others in the root project directory.
 IMPORTANT ONLY USE OBJ FILES AND MAKE SURE THAT THE FILES HAVE TEXTURE COORDINATES THIS MEANS THAT INSIDE THE OBJ FILES YOU SHOULD SEE LINES STARTING WITH vt AND THE LINES THAT START WITH  f should look like #/#/# NOT #//# FAILURE TO DO THIS WILL CURRENTLY RESULT IN THE PROGRAM CRASHING WHEN IT TRIES TO LOAD YOUR FILE.
