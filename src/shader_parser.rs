@@ -15,3 +15,12 @@ pub fn read_file(file_path: &String) -> String {
     file.read_to_string(&mut contents);
     return contents;
 }
+
+///test that no changes are made to the content of a
+///file when using read_file
+#[test]
+fn test_read_file(){
+    let file = read_file(&"testFile.txt".to_string());
+    let content = "TEST this is a test file!".to_string();
+    assert!(file == content);
+}

@@ -1,4 +1,7 @@
 // Copyright <2018> <Anthony Comstock>
+
+//! This program is designed to simply render simple 3D obj objects to the screen and allow the user
+//! cycle through objects, add and remove them on the fly, and adjust the vertex and fragment shaders on the fly
 #[macro_use]
 extern crate glium;
 extern crate image;

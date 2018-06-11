@@ -281,6 +281,20 @@ pub fn posTex(positions: &Vec<mat::Vertex>, texels: &Vec<mat::Texture>) -> Vec<m
     return posTex;
 }
 
+///test that a posTex made two different ways comes out the same
+#[test]
+fn test_posTex(){
+    let test_vertex = mat::Vertex{ position: [1.0,0.5,0.25]};
+    let test_texture = mat::Texture{ tex_coords: [0.66,0.33]};
+    let test_posTex = mat::PosTex{ position: [1.0,0.5,0.25], tex_coords: [0.66,0.33]};
+    let mut vVec: Vec<mat::Vertex> = Vec::new();
+    let mut tVec: Vec<mat::Texture> = Vec::new();
+    vVec.push(test_vertex);
+    tVec.push(test_texture);
+    let test_posTex_vec = posTex(&vVec,&tVec);
+    assert!(test_posTex_vec[0].position == test_posTex.position && test_posTex_vec[0].tex_coords == test_posTex.tex_coords);
+}
+
 /// function name: getObjectFileName
 /// inputs: the index into the list of names as usize
 /// outputs: the string that is the file name
@@ -321,4 +335,11 @@ pub fn fileSection(ref fileName: &String, token: String) -> Vec<String> {
         }
     }
     return tokenLines;
+}
+
+///test fileSection with the test file which should not change
+#[test]
+fn test_fileSelection(){
+    let test_section = fileSection(&"testfile.txt".to_string(),"TEST".to_string());
+    assert!(test_section[0] == "TEST this is a test file!".to_string());
 }
