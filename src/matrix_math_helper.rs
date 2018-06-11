@@ -1,5 +1,11 @@
-// Copyright <2018> <Anthony Comstock>
-//the following definitions are taken from or influenced by the glium examples since they are the format needed for glium
+//! Copyright <2018> <Anthony Comstock>
+//!the following definitions are influenced by the glium examples since they are the format needed for glium
+//! they are not an exact match to the structs used in the glium examples but are a re-partioning of the structs used
+//! so all credit goes to them.
+//! [This program is licensed under the "Apache Licence"]
+//! Please see the file LICENSE in the source distribution of this software for license terms.
+
+//! this file contains the structs used in the program to make the math in the program make more sense.
 
 /// struct name: Vertex
 /// description: a structure to hold

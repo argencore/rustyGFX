@@ -1,4 +1,9 @@
-// Copyright <2018> <Anthony Comstock>
+//! Copyright <2018> <Anthony Comstock>
+//! [This program is licensed under the "Apache Licence"]
+//! Please see the file LICENSE in the source distribution of this software for license terms.
+
+//! the window file creates and initializes the window that will be drawn in by the program
+
 #[path = "matrix_math_helper.rs"]
 mod matrix_math_helper;
 

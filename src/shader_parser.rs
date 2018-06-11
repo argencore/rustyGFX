@@ -1,4 +1,10 @@
-// Copyright <2018> <Anthony Comstock>
+//! Copyright <2018> <Anthony Comstock>
+//! [This program is licensed under the "Apache Licence"]
+//! Please see the file LICENSE in the source distribution of this software for license terms.
+
+//! The shader_parser file contains the code to read in a text file and convert it into a string to
+//! be used as a shader
+
 use std::fs::File;
 use std::io::prelude::*;
 
@@ -19,7 +25,7 @@ pub fn read_file(file_path: &String) -> String {
 ///test that no changes are made to the content of a
 ///file when using read_file
 #[test]
-fn test_read_file(){
+fn test_read_file() {
     let file = read_file(&"testFile.txt".to_string());
     let content = "TEST this is a test file!".to_string();
     assert!(file == content);

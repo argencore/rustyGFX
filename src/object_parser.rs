@@ -1,4 +1,11 @@
-// Copyright <2018> <Anthony Comstock>
+//! Copyright <2018> <Anthony Comstock>
+//! [This program is licensed under the "Apache Licence"]
+//! Please see the file LICENSE in the source distribution of this software for license terms.
+
+//!The object_parser file contains all of the functions used to parse
+//! obj files into the matrix_math_helper structs to be used in the main
+//! program
+
 #[path = "matrix_math_helper.rs"]
 pub mod mat;
 use std::fs::File;
@@ -283,16 +290,26 @@ pub fn posTex(positions: &Vec<mat::Vertex>, texels: &Vec<mat::Texture>) -> Vec<m
 
 ///test that a posTex made two different ways comes out the same
 #[test]
-fn test_posTex(){
-    let test_vertex = mat::Vertex{ position: [1.0,0.5,0.25]};
-    let test_texture = mat::Texture{ tex_coords: [0.66,0.33]};
-    let test_posTex = mat::PosTex{ position: [1.0,0.5,0.25], tex_coords: [0.66,0.33]};
+fn test_posTex() {
+    let test_vertex = mat::Vertex {
+        position: [1.0, 0.5, 0.25],
+    };
+    let test_texture = mat::Texture {
+        tex_coords: [0.66, 0.33],
+    };
+    let test_posTex = mat::PosTex {
+        position: [1.0, 0.5, 0.25],
+        tex_coords: [0.66, 0.33],
+    };
     let mut vVec: Vec<mat::Vertex> = Vec::new();
     let mut tVec: Vec<mat::Texture> = Vec::new();
     vVec.push(test_vertex);
     tVec.push(test_texture);
-    let test_posTex_vec = posTex(&vVec,&tVec);
-    assert!(test_posTex_vec[0].position == test_posTex.position && test_posTex_vec[0].tex_coords == test_posTex.tex_coords);
+    let test_posTex_vec = posTex(&vVec, &tVec);
+    assert!(
+        test_posTex_vec[0].position == test_posTex.position
+            && test_posTex_vec[0].tex_coords == test_posTex.tex_coords
+    );
 }
 
 /// function name: getObjectFileName
@@ -339,7 +356,7 @@ pub fn fileSection(ref fileName: &String, token: String) -> Vec<String> {
 
 ///test fileSection with the test file which should not change
 #[test]
-fn test_fileSelection(){
-    let test_section = fileSection(&"testfile.txt".to_string(),"TEST".to_string());
+fn test_fileSelection() {
+    let test_section = fileSection(&"testfile.txt".to_string(), "TEST".to_string());
     assert!(test_section[0] == "TEST this is a test file!".to_string());
 }

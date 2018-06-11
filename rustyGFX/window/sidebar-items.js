@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["create_window","function to create the window and return it"]]});

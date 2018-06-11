@@ -1,4 +1,7 @@
-// this function was taken from the glium tutorials
+//! this function was taken from the glium tutorials that can be found at github.com/glium/glium/examples it is unmodified from its original state
+//! this file contains the code that controls the camera movement and allows for users to move around in 3D space
+//! [This program is licensed under the "Apache Licence"]
+//! Please see the file LICENSE in the source distribution of this software for license terms.
 
 /// function name: view_matrix
 /// inputs: position, direction, up

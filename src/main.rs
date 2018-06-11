@@ -1,7 +1,10 @@
-// Copyright <2018> <Anthony Comstock>
+//! Copyright <2018> <Anthony Comstock>
+//! [This program is licensed under the "Apache Licence"]
+//! Please see the file LICENSE in the source distribution of this software for license terms.
 
 //! This program is designed to simply render simple 3D obj objects to the screen and allow the user
 //! cycle through objects, add and remove them on the fly, and adjust the vertex and fragment shaders on the fly
+//! this main file contains init to initalize the window, run to run the program and draw to render the objects on the screen
 #[macro_use]
 extern crate glium;
 extern crate image;
