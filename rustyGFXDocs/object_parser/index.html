@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `object_parser` mod in crate `rustyGFX`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, object_parser">
+
+    <title>rustyGFX::object_parser - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css" id="themeStyle">
+    <script src="../../storage.js"></script>
+    
+
+    
+    
+</head>
+<body class="rustdoc mod">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        
+        <p class='location'>Module object_parser</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#functions">Functions</a></li></ul></div><p class='location'><a href='../index.html'>rustyGFX</a></p><script>window.sidebarCurrent = {name: 'object_parser', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script></div>
+    </nav>
+
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../../theme.js"></script>
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>rustyGFX</a>::<wbr><a class="mod" href=''>object_parser</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/rustyGFX/object_parser.rs.html#1-362' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Copyright &lt;2018&gt; <Anthony Comstock>
+[This program is licensed under the &quot;Apache Licence&quot;]
+Please see the file LICENSE in the source distribution of this software for license terms.
+The object_parser file contains all of the functions used to parse
+obj files into the matrix_math_helper structs to be used in the main
+program</p>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="mat/index.html"
+                                  title='mod rustyGFX::object_parser::mat'>mat</a></td>
+                           <td class='docblock-short'>
+                                <p>Copyright &lt;2018&gt; <Anthony Comstock>
+the following definitions are influenced by the glium examples since they are the format needed for glium
+they are not an exact match to the structs used in the glium examples but are a re-partioning of the structs used
+so all credit goes to them.
+[This program is licensed under the &quot;Apache Licence&quot;]
+Please see the file LICENSE in the source distribution of this software for license terms.
+this file contains the structs used in the program to make the math in the program make more sense.</p>
+
+                           </td>
+                       </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Model.html"
+                                  title='struct rustyGFX::object_parser::Model'>Model</a></td>
+                           <td class='docblock-short'>
+                                <p>struct name: Model
+description: this struct is designed
+to hold the meta data about a model being used
+by the program it holds the number of vertices,
+positions, texels, normals, and faces of the model</p>
+
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.faces.html"
+                                  title='fn rustyGFX::object_parser::faces'>faces</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: faces
+inputs: the name of the file as a string
+outputs: a vector of the Face struct
+description: this function takes in a filename
+it get the piece of the file related to face data
+it then parses that into a vector of Face structs</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.fileSection.html"
+                                  title='fn rustyGFX::object_parser::fileSection'>fileSection</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: fileSection
+inputs: name of file as string, token to look for as start of line in the file
+outputs: a vector of strings that are the lines in the file related to the token
+description: this function gets all of the lines of a file that start with the token
+passed to it.</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.getObjectFileName.html"
+                                  title='fn rustyGFX::object_parser::getObjectFileName'>getObjectFileName</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: getObjectFileName
+inputs: the index into the list of names as usize
+outputs: the string that is the file name
+description: this function reads in the file that contains
+the names of the object files and then returns the one at the index
+or modulus of the index to avoid out of bounds</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.normals.html"
+                                  title='fn rustyGFX::object_parser::normals'>normals</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: normals
+inputs: the file name as a string
+outputs: a vector of Normal structs
+description: this function gets the normal data
+from a file and reorders it by index for openGL</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.posTex.html"
+                                  title='fn rustyGFX::object_parser::posTex'>posTex</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: posTex
+inputs: positions as a vector of Vertex structs, texels as a vector of Texture structs
+outputs: a vector of PosTex structs
+description: this function combines the position and texture data into a single list of data</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.positions.html"
+                                  title='fn rustyGFX::object_parser::positions'>positions</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: positions
+inputs: the name of the file as a string
+outputs: a vector of Vertex structs
+description: this function takes in a file name
+it runs vertices and faces to get vectors of vertices and
+faces and uses those to create a new ordering for the vertices
+that is acceptable for openGL to use in rendering</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.texels.html"
+                                  title='fn rustyGFX::object_parser::texels'>texels</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: texels
+inputs: the file name as a string
+outputs: a vector of Textures
+description: this function gets and reorders
+the textures based on the face data so that they can
+be used by openGL</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.unmodifiedNormals.html"
+                                  title='fn rustyGFX::object_parser::unmodifiedNormals'>unmodifiedNormals</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: unmodifiedNormals
+inputs: the name of the file to parse as a string
+outputs: a vector of the Normal struct
+description: this function takes the piece of a file
+related to normals and parses it into a vector of normal
+structs</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.unmodifiedTextures.html"
+                                  title='fn rustyGFX::object_parser::unmodifiedTextures'>unmodifiedTextures</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: unmodifiedTextures
+input: name of the file as a string
+output: a vector of the Texture struct
+description: this function takes a file name
+gets the section of that file related to texture data
+parses that into Texture structures
+adds those to a vector and returns that</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.vertices.html"
+                                  title='fn rustyGFX::object_parser::vertices'>vertices</a></td>
+                           <td class='docblock-short'>
+                                <p>function name: vertices
+inputs: the file name as a string
+outputs: a vector of Vertex structures
+description: this function takes the name of a file
+gets the section of the file related to vertices
+and parses that section into a series of Vertex structures that</p>
+
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt><kbd>?</kbd></dt>
+                    <dd>Show this help dialog</dd>
+                    <dt><kbd>S</kbd></dt>
+                    <dd>Focus the search field</dd>
+                    <dt><kbd>↑</kbd></dt>
+                    <dd>Move up in search results</dd>
+                    <dt><kbd>↓</kbd></dt>
+                    <dd>Move down in search results</dd>
+                    <dt><kbd>↹</kbd></dt>
+                    <dd>Switch tab</dd>
+                    <dt><kbd>&#9166;</kbd></dt>
+                    <dd>Go to active search result</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "rustyGFX";
+    </script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

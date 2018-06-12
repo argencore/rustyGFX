@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `rustyGFX` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, rustyGFX">
+
+    <title>rustyGFX - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../dark.css">
+    <link rel="stylesheet" type="text/css" href="../main.css" id="themeStyle">
+    <script src="../storage.js"></script>
+    
+
+    
+    
+</head>
+<body class="rustdoc mod">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
+        
+        <p class='location'>Crate rustyGFX</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'rustyGFX', ty: 'mod', relpath: '../'};</script></div>
+    </nav>
+
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Crate <a class="mod" href=''>rustyGFX</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/rustyGFX/main.rs.html#1-253' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Copyright &lt;2018&gt; <Anthony Comstock>
+[This program is licensed under the &quot;Apache Licence&quot;]
+Please see the file LICENSE in the source distribution of this software for license terms.
+This program is designed to simply render simple 3D obj objects to the screen and allow the user
+cycle through objects, add and remove them on the fly, and adjust the vertex and fragment shaders on the fly
+this main file contains init to initalize the window, run to run the program and draw to render the objects on the screen</p>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="camera/index.html"
+                                  title='mod rustyGFX::camera'>camera</a></td>
+                           <td class='docblock-short'>
+                                <p>this function was taken from the glium tutorials that can be found at github.com/glium/glium/examples it is unmodified from its original state
+this file contains the code that controls the camera movement and allows for users to move around in 3D space</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="mat/index.html"
+                                  title='mod rustyGFX::mat'>mat</a></td>
+                           <td class='docblock-short'>
+                                <p>Copyright &lt;2018&gt; <Anthony Comstock>
+the following definitions are influenced by the glium examples since they are the format needed for glium
+they are not an exact match to the structs used in the glium examples but are a re-partioning of the structs used
+so all credit goes to them.
+[This program is licensed under the &quot;Apache Licence&quot;]
+Please see the file LICENSE in the source distribution of this software for license terms.
+this file contains the structs used in the program to make the math in the program make more sense.</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="object_parser/index.html"
+                                  title='mod rustyGFX::object_parser'>object_parser</a></td>
+                           <td class='docblock-short'>
+                                <p>Copyright &lt;2018&gt; <Anthony Comstock>
+[This program is licensed under the &quot;Apache Licence&quot;]
+Please see the file LICENSE in the source distribution of this software for license terms.
+The object_parser file contains all of the functions used to parse
+obj files into the matrix_math_helper structs to be used in the main
+program</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="shader_parser/index.html"
+                                  title='mod rustyGFX::shader_parser'>shader_parser</a></td>
+                           <td class='docblock-short'>
+                                <p>Copyright &lt;2018&gt; <Anthony Comstock>
+[This program is licensed under the &quot;Apache Licence&quot;]
+Please see the file LICENSE in the source distribution of this software for license terms.
+The shader_parser file contains the code to read in a text file and convert it into a string to
+be used as a shader</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="window/index.html"
+                                  title='mod rustyGFX::window'>window</a></td>
+                           <td class='docblock-short'>
+                                <p>Copyright &lt;2018&gt; <Anthony Comstock>
+[This program is licensed under the &quot;Apache Licence&quot;]
+Please see the file LICENSE in the source distribution of this software for license terms.
+the window file creates and initializes the window that will be drawn in by the program</p>
+
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt><kbd>?</kbd></dt>
+                    <dd>Show this help dialog</dd>
+                    <dt><kbd>S</kbd></dt>
+                    <dd>Focus the search field</dd>
+                    <dt><kbd>↑</kbd></dt>
+                    <dd>Move up in search results</dd>
+                    <dt><kbd>↓</kbd></dt>
+                    <dd>Move down in search results</dd>
+                    <dt><kbd>↹</kbd></dt>
+                    <dd>Switch tab</dd>
+                    <dt><kbd>&#9166;</kbd></dt>
+                    <dd>Go to active search result</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "rustyGFX";
+    </script>
+    <script src="../main.js"></script>
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

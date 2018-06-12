@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["read_file","function name: read_file inputs: path to the file to read as a string outputs: string containing the contents of the file description: this is a simple function that reads a file and returns its contents as a string"]]});
